@@ -41,7 +41,7 @@ function getBrands() {
                     <td>
                         <button class="btn btn-sm btn-info p-2" onclick="viewBrand(${brand.brand_id})">View</button>
                         <button class="btn btn-sm btn-warning p-2" onclick="editBrand(${brand.brand_id})">Edit</button>
-                        <button class="btn btn-sm btn-danger p-2" onclick="deleteBrand(${brand.brand_id})">Delete</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBrand(${brand.brand_id})">Delete</button>
                     </td>
                 `;
 
@@ -83,51 +83,90 @@ function editBrand(id) {
         });
 }
 
-function updateBrand() {
+// function updateBrand() {
+//     const id = document.getElementById("editBrandId").value;
+//     const body = {
+//         brand_name: document.getElementById("editBrandName").value,
+//         description: document.getElementById("editBrandDescription").value,
+//         bonus_message: document.getElementById("editBrandBonus").value,
+//         tag: document.getElementById("editBrandTag").value,
+//         isNew: document.getElementById("editBrandIsNew").value,
+//         rating: document.getElementById("editBrandRating").value,
+//     };
+
+//     fetch(`http://127.0.0.1:8000/api/brands/${id}`, {
+//         method: "PUT",
+//         headers: { "Content-Type": "application/json", "Accept": "application/json" },
+//         body: JSON.stringify(body),
+//     })
+//     .then(res => res.json())
+//     .then(() => {
+//         getBrands();
+//         bootstrap.Modal.getInstance(document.getElementById("editBrandModal")).hide();
+//     });
+// }
+
+document.getElementById("addBrandForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/brands", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Error adding brand");
+        }
+
+        const data = await response.json();
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("addBrandModal"));
+        modal.hide();
+
+        form.reset();
+
+        getBrands();
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to add the brand!");
+    }
+});
+
+document.getElementById("editBrandForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
     const id = document.getElementById("editBrandId").value;
-    const body = {
-        brand_name: document.getElementById("editBrandName").value,
-        description: document.getElementById("editBrandDescription").value,
-        bonus_message: document.getElementById("editBrandBonus").value,
-        tag: document.getElementById("editBrandTag").value,
-        isNew: document.getElementById("editBrandIsNew").value,
-        rating: document.getElementById("editBrandRating").value,
-    };
+    const form = e.target;
+    const formData = new FormData(form);
 
-    fetch(`http://127.0.0.1:8000/api/brands/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(body),
-    })
-    .then(res => res.json())
-    .then(() => {
-        fetchBrands();
-        bootstrap.Modal.getInstance(document.getElementById("editBrandModal")).hide();
-    });
-}
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/brands/${id}`, {
+            method: "POST", 
+            headers: { "X-HTTP-Method-Override": "PUT" },
+            body: formData
+        });
 
-function addBrand() {
-    const body = {
-        brand_name: document.getElementById("addBrandName").value,
-        description: document.getElementById("addBrandDescription").value,
-        bonus_message: document.getElementById("addBrandBonus").value,
-        tag: document.getElementById("addBrandTag").value,
-        isNew: document.getElementById("addBrandIsNew").value,
-        rating: document.getElementById("addBrandRating").value,
-    };
+        if (!response.ok) {
+            throw new Error("Erreur lors de la mise à jour du brand");
+        }
 
-    fetch("http://127.0.0.1:8000/api/brands", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(body),
-    })
-    .then(res => res.json())
-    .then(() => {
-        fetchBrands();
-        document.getElementById("addBrandForm").reset();
-        bootstrap.Modal.getInstance(document.getElementById("addBrandModal")).hide();
-    });
-}
+        const data = await response.json();
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("editBrandModal"));
+        modal.hide();
+
+        getBrands();
+
+    } catch (error) {
+        console.error(error);
+        alert("Impossible de mettre à jour le brand !");
+    }
+});
 
 function deleteBrand(id) {
     if (!confirm("Are you sure you want to delete this brand?")) return;
@@ -142,7 +181,7 @@ function deleteBrand(id) {
     .then(response => {
         if (response.ok) {
             alert("Brand deleted successfully!");
-            fetchBrands();
+            getBrands();
         } else {
             alert("Failed to delete brand.");
         }

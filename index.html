@@ -61,7 +61,6 @@
             ></button>
           </div>
           <div class="modal-body" id="viewBrandContent">
-            <!-- Filled by JS -->
           </div>
         </div>
       </div>
@@ -85,34 +84,76 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="editBrandForm">
-              <input type="hidden" id="editBrandId" />
+            <form id="editBrandForm" enctype="multipart/form-data">
+              <input type="hidden" id="editBrandId" name="id" />
+
               <div class="mb-3">
                 <label class="form-label">Brand Name</label>
-                <input type="text" class="form-control" id="editBrandName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editBrandName"
+                  name="brand_name"
+                />
               </div>
+
+              <div class="mb-3">
+                <label class="form-label">Current Image</label><br />
+                <img
+                  id="editBrandImagePreview"
+                  src=""
+                  alt="Brand Image"
+                  class="img-thumbnail mb-2"
+                  width="150"
+                />
+                <input
+                  type="file"
+                  class="form-control"
+                  id="editBrandImage"
+                  name="brand_image_url"
+                  accept="image/*"
+                />
+              </div>
+
               <div class="mb-3">
                 <label class="form-label">Description</label>
                 <textarea
                   class="form-control"
                   id="editBrandDescription"
+                  name="description"
                 ></textarea>
               </div>
+
               <div class="mb-3">
                 <label class="form-label">Bonus Message</label>
-                <input type="text" class="form-control" id="editBrandBonus" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editBrandBonus"
+                  name="bonus_message"
+                />
               </div>
+
               <div class="row">
                 <div class="col">
                   <div class="mb-3">
                     <label class="form-label">Tag</label>
-                    <input type="text" class="form-control" id="editBrandTag" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editBrandTag"
+                      name="tag"
+                    />
                   </div>
                 </div>
                 <div class="col">
                   <div class="mb-3">
                     <label class="form-label">Is New?</label>
-                    <select id="editBrandIsNew" class="form-select">
+                    <select
+                      id="editBrandIsNew"
+                      class="form-select"
+                      name="isNew"
+                    >
                       <option value="1">Yes</option>
                       <option value="0">No</option>
                     </select>
@@ -125,6 +166,7 @@
                       type="number"
                       class="form-control"
                       id="editBrandRating"
+                      name="rating"
                       min="0"
                       max="5"
                     />
@@ -142,57 +184,80 @@
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addBrandModal" tabindex="-1" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="addBrandModal"
+      tabindex="-1"
+      aria-labelledby="addBrandModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
-            <h5 class="modal-title">Add Brand</h5>
+            <h5 class="modal-title" id="addBrandModalLabel">Add Brand</h5>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
+              aria-label="Close"
             ></button>
           </div>
           <div class="modal-body">
-            <form id="addBrandForm">
+            <form id="addBrandForm" enctype="multipart/form-data">
               <div class="mb-3">
                 <label class="form-label">Brand Name</label>
-                <input type="text" class="form-control" id="addBrandName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="brand_name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Brand Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  name="brand_image"
+                  accept="image/*"
+                />
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea
-                  class="form-control"
-                  id="addBrandDescription"
-                ></textarea>
+                <textarea class="form-control" name="description"></textarea>
               </div>
               <div class="mb-3">
                 <label class="form-label">Bonus Message</label>
-                <input type="text" class="form-control" id="addBrandBonus" />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="bonus_message"
+                  required
+                />
               </div>
               <div class="row">
                 <div class="col">
-                  <div>
+                  <div class="mb-3">
                     <label class="form-label">Tag</label>
-                    <input type="text" class="form-control" id="addBrandTag" />
+                    <input type="text" class="form-control" name="tag" />
                   </div>
                 </div>
                 <div class="col">
-                  <div>
+                  <div class="mb-3">
                     <label class="form-label">Is New?</label>
-                    <select id="addBrandIsNew" class="form-select">
+                    <select class="form-select" name="isNew">
                       <option value="1">Yes</option>
-                      <option value="0">No</option>
+                      <option value="0" selected>No</option>
                     </select>
                   </div>
                 </div>
                 <div class="col">
-                  <div>
-                    <label class="form-label">Rating</label>
+                  <div class="mb-3">
+                    <label class="form-label">Rating (0-5)</label>
                     <input
                       type="number"
                       class="form-control"
-                      id="addBrandRating"
+                      name="rating"
                       min="0"
                       max="5"
                     />
@@ -200,9 +265,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-success mt-4">
-                Add Brand
-              </button>
+              <button type="submit" class="btn btn-success">Save Brand</button>
             </form>
           </div>
         </div>
