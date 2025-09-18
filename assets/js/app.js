@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getBrands() {
-  fetch("http://127.0.0.1:8000/api/brands")
+  fetch("http://localhost:8000/api/brands")
     .then((response) => response.json())
     .then((data) => {
       const tbody = document.getElementById("table-body");
@@ -80,7 +80,7 @@ function getBrands() {
 }
 
 function viewBrand(id) {
-  fetch(`http://127.0.0.1:8000/api/brands/${id}`)
+  fetch(`http://localhost:8000/api/brands/${id}`)
     .then((res) => res.json())
     .then((brand) => {
       document.getElementById("viewBrandContent").innerHTML = `
@@ -101,7 +101,7 @@ function viewBrand(id) {
 }
 
 function editBrand(id) {
-  fetch(`http://127.0.0.1:8000/api/brands/${id}`)
+  fetch(`http://localhost:8000/api/brands/${id}`)
     .then((res) => res.json())
     .then((brand) => {
       document.getElementById("editBrandId").value = brand.brand_id;
@@ -124,7 +124,7 @@ document
     const formData = new FormData(form);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/brands", {
+      const response = await fetch("http://localhost:8000/api/brands", {
         method: "POST",
         body: formData,
       });
@@ -159,7 +159,7 @@ document
     const formData = new FormData(form);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/brands/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/brands/${id}`, {
         method: "POST",
         headers: { "X-HTTP-Method-Override": "PUT" },
         body: formData,
@@ -186,7 +186,7 @@ document
 function deleteBrand(id) {
   if (!confirm("Are you sure you want to delete this brand?")) return;
 
-  fetch(`http://127.0.0.1:8000/api/brands/${id}`, {
+  fetch(`http://localhost:8000/api/brands/${id}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
